@@ -159,6 +159,19 @@ td.breakdown {
   text-align: right;
 }
 
+.team-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.team-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
 .pts-positive { color: var(--pos); font-weight: 600; }
 .pts-negative { color: var(--neg); font-weight: 600; }
 .pts-zero { color: var(--muted); }

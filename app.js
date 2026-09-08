@@ -138,11 +138,12 @@ function renderRankChart(canvasEl, history, key, participants) {
 }
 
 async function main() {
-  const [draftResults, history, latestPlayerPoints, playerPhotos] = await Promise.all([
+  const [draftResults, history, latestPlayerPoints, playerPhotos, teamLogos] = await Promise.all([
     fetch("data/draft_results.json").then((r) => r.json()),
     fetch("data/history.json").then((r) => (r.ok ? r.json() : [])),
     fetch("data/latest_player_points.json").then((r) => (r.ok ? r.json() : {})),
     fetch("data/player_photos.json").then((r) => (r.ok ? r.json() : {})),
+    fetch("data/team_logos.json").then((r) => (r.ok ? r.json() : {})),
   ]);
 
   const participants = draftResults.participants;
@@ -177,7 +178,14 @@ async function main() {
       .join("");
     return `<div class="player-grid">${rows}</div>`;
   };
-  const teamOf = (name) => draftResults.team_draft.results[name];
+  const teamOf = (name) => {
+    const teamName = draftResults.team_draft.results[name];
+    const logoUrl = teamLogos[teamName];
+    const logo = logoUrl
+      ? `<img class="team-logo" src="${logoUrl}" alt="" loading="lazy">`
+      : "";
+    return `<span class="team-row">${logo}<span>${teamName}</span></span>`;
+  };
 
   renderTable(
     document.getElementById("table-purpose1"),
