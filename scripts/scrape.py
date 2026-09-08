@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 DRAFT_RESULTS_PATH = DATA_DIR / "draft_results.json"
 HISTORY_PATH = DATA_DIR / "history.json"
+LATEST_PLAYER_POINTS_PATH = DATA_DIR / "latest_player_points.json"
 
 
 def parse_point(text: str) -> float:
@@ -67,7 +68,7 @@ def fetch_player_points() -> dict:
     return result
 
 
-def compute_totals(player_points_by_team: dict, draft_results: dict) -> tuple[dict, dict]:
+def compute_totals(player_points_by_team: dict, draft_results: dict) -> tuple[dict, dict, dict]:
     all_player_points = {}
     team_points = {}
     for team, players in player_points_by_team.items():
@@ -84,7 +85,7 @@ def compute_totals(player_points_by_team: dict, draft_results: dict) -> tuple[di
         drafted_team = draft_results["team_draft"]["results"][participant]
         purpose2[participant] = team_points.get(drafted_team, 0.0)
 
-    return purpose1, purpose2
+    return purpose1, purpose2, all_player_points
 
 
 def load_history() -> list:
@@ -105,7 +106,12 @@ def main() -> int:
         print("no data parsed from stats page; aborting without writing", file=sys.stderr)
         return 1
 
-    purpose1, purpose2 = compute_totals(player_points_by_team, draft_results)
+    purpose1, purpose2, all_player_points = compute_totals(player_points_by_team, draft_results)
+
+    LATEST_PLAYER_POINTS_PATH.write_text(
+        json.dumps(all_player_points, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     history = load_history()
     if history:

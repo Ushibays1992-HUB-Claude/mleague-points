@@ -87,9 +87,10 @@ function renderRankChart(canvasEl, history, key, participants) {
 }
 
 async function main() {
-  const [draftResults, history] = await Promise.all([
+  const [draftResults, history, latestPlayerPoints] = await Promise.all([
     fetch("data/draft_results.json").then((r) => r.json()),
     fetch("data/history.json").then((r) => (r.ok ? r.json() : [])),
+    fetch("data/latest_player_points.json").then((r) => (r.ok ? r.json() : {})),
   ]);
 
   const participants = draftResults.participants;
@@ -108,7 +109,11 @@ async function main() {
 
   const playersOf = (name) =>
     draftResults.player_draft.results[name]
-      .map((p) => p.name)
+      .map((p) => {
+        const pts = latestPlayerPoints[p.name];
+        const ptsText = typeof pts === "number" ? formatPoints(pts) : "-";
+        return `${p.name}(${ptsText})`;
+      })
       .join("・");
   const teamOf = (name) => draftResults.team_draft.results[name];
 
