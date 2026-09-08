@@ -64,18 +64,18 @@ main {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1.25rem 1.5rem 1.5rem;
+  padding: 1rem 1.5rem 1.1rem;
 }
 
 .board h2, .chart-section h2 {
-  margin: 0 0 0.25rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
 }
 
 .board-desc {
-  margin: 0 0 1rem;
+  margin: 0 0 0.6rem;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
 }
 
 .table-wrap {
@@ -90,7 +90,7 @@ table {
 
 th, td {
   text-align: left;
-  padding: 0.6rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
@@ -116,21 +116,28 @@ th, td {
 
 td.breakdown {
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   white-space: normal;
-  padding-top: 0.5rem;
+  padding-top: 0.3rem;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, auto));
+  column-gap: 1.25rem;
+  row-gap: 0.1rem;
 }
 
 .player-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.15rem 0;
+  gap: 0.4rem;
+  padding: 0.1rem 0;
 }
 
 .player-photo {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--border);
   flex: 0 0 auto;

@@ -159,8 +159,8 @@ async function main() {
     document.getElementById("empty-state").hidden = false;
   }
 
-  const playersOf = (name) =>
-    draftResults.player_draft.results[name]
+  const playersOf = (name) => {
+    const rows = draftResults.player_draft.results[name]
       .map((p) => {
         const pts = latestPlayerPoints[p.name];
         const ptsText = typeof pts === "number" ? formatPointsHtml(pts) : "-";
@@ -175,6 +175,8 @@ async function main() {
         </div>`;
       })
       .join("");
+    return `<div class="player-grid">${rows}</div>`;
+  };
   const teamOf = (name) => draftResults.team_draft.results[name];
 
   renderTable(
