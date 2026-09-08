@@ -106,10 +106,40 @@ td.rank-cell {
 .rank-2 { color: var(--rank2); }
 .rank-3 { color: var(--rank3); }
 
+th, td {
+  vertical-align: top;
+}
+
 td.breakdown {
   color: var(--muted);
   font-size: 0.8rem;
   white-space: normal;
+  padding-top: 0.5rem;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+}
+
+.player-photo {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--border);
+  flex: 0 0 auto;
+}
+
+.player-name {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.player-pts {
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
 }
 
 td.points {

@@ -112,9 +112,13 @@ async function main() {
       .map((p) => {
         const pts = latestPlayerPoints[p.name];
         const ptsText = typeof pts === "number" ? formatPoints(pts) : "-";
-        return `${p.name}(${ptsText})`;
+        return `<div class="player-row">
+          <span class="player-photo" aria-hidden="true"></span>
+          <span class="player-name">${p.name}</span>
+          <span class="player-pts">${ptsText}</span>
+        </div>`;
       })
-      .join("・");
+      .join("");
   const teamOf = (name) => draftResults.team_draft.results[name];
 
   renderTable(
