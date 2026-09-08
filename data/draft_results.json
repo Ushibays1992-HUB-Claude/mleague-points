@@ -1,0 +1,52 @@
+{
+  "completed_at": "2026-09-05",
+  "participants": ["うし", "犬丼", "ちんさん", "木村", "ヤンマ"],
+
+  "player_draft": {
+    "description": "各参加者がMリーガーを4巡指名した結果（1巡〜4巡の順）",
+    "results": {
+      "うし": [
+        { "round": 1, "name": "白鳥 翔", "team": "渋谷ABEMAS" },
+        { "round": 2, "name": "日向 藍子", "team": "渋谷ABEMAS" },
+        { "round": 3, "name": "園田 賢", "team": "赤坂ドリブンズ" },
+        { "round": 4, "name": "鈴木 大介", "team": "BEAST X" }
+      ],
+      "犬丼": [
+        { "round": 1, "name": "本田 朋広", "team": "TEAM RAIDEN" },
+        { "round": 2, "name": "東城 りお", "team": "BEAST X" },
+        { "round": 3, "name": "佐々木 寿人", "team": "KONAMI麻雀格闘倶楽部" },
+        { "round": 4, "name": "多井 隆晴", "team": "渋谷ABEMAS" }
+      ],
+      "ちんさん": [
+        { "round": 1, "name": "仲林 圭", "team": "U-NEXT Pirates" },
+        { "round": 2, "name": "渡辺 太", "team": "赤坂ドリブンズ" },
+        { "round": 3, "name": "石井 一馬", "team": "EARTH JETS" },
+        { "round": 4, "name": "岡田 紗佳", "team": "KADOKAWAサクラナイツ" }
+      ],
+      "木村": [
+        { "round": 1, "name": "瑞原 明奈", "team": "U-NEXT Pirates" },
+        { "round": 2, "name": "伊達 朱里紗", "team": "KONAMI麻雀格闘倶楽部" },
+        { "round": 3, "name": "下石 戟", "team": "BEAST X" },
+        { "round": 4, "name": "勝又 健志", "team": "EX風林火山" }
+      ],
+      "ヤンマ": [
+        { "round": 1, "name": "堀 慎吾", "team": "KADOKAWAサクラナイツ" },
+        { "round": 2, "name": "二階堂 亜樹", "team": "EX風林火山" },
+        { "round": 3, "name": "鈴木 優", "team": "U-NEXT Pirates" },
+        { "round": 4, "name": "竹内 元太", "team": "セガサミーフェニックス" }
+      ]
+    }
+  },
+
+  "team_draft": {
+    "description": "各参加者がMリーグ10チームのうち1チームを指名した結果（5チームは未使用のまま残存）",
+    "results": {
+      "うし": "U-NEXT Pirates",
+      "犬丼": "TEAM RAIDEN",
+      "ちんさん": "KADOKAWAサクラナイツ",
+      "木村": "KONAMI麻雀格闘倶楽部",
+      "ヤンマ": "赤坂ドリブンズ"
+    },
+    "undrafted_teams": ["EARTH JETS", "EX風林火山", "渋谷ABEMAS", "セガサミーフェニックス", "BEAST X"]
+  }
+}

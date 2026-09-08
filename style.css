@@ -1,0 +1,139 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f7f7fb;
+  --card-bg: #ffffff;
+  --text: #1c1c24;
+  --muted: #6b6b78;
+  --border: #e4e4ec;
+  --accent: #5b4de0;
+  --rank1: #d4af37;
+  --rank2: #a8a8b3;
+  --rank3: #b08d57;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14141c;
+    --card-bg: #1e1e29;
+    --text: #ececf4;
+    --muted: #9a9aab;
+    --border: #33333f;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+.site-header {
+  padding: 2rem 1.5rem 1rem;
+  text-align: center;
+}
+
+.site-header h1 {
+  margin: 0 0 0.4rem;
+  font-size: 1.6rem;
+}
+
+.updated {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.board, .chart-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.board h2, .chart-section h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+}
+
+.board-desc {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+td.rank-cell {
+  font-weight: 700;
+  width: 2.5rem;
+}
+
+.rank-1 { color: var(--rank1); }
+.rank-2 { color: var(--rank2); }
+.rank-3 { color: var(--rank3); }
+
+td.breakdown {
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: normal;
+}
+
+td.points {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.chart-wrap {
+  position: relative;
+  height: 320px;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+}
+
+.site-footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding: 1rem 1.5rem 2.5rem;
+}
+
+.site-footer a {
+  color: var(--accent);
+}
