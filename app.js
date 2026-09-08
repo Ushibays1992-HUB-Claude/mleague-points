@@ -57,6 +57,47 @@ function renderTable(tableEl, totals, extraColumnHeader, extraColumnFn) {
   `;
 }
 
+function renderPointsChart(canvasEl, history, key, participants) {
+  const labels = history.map((r) => r.date);
+  const datasets = participants.map((name) => {
+    const data = history.map((r) => r[key][name]);
+    return {
+      label: name,
+      data,
+      borderColor: PARTICIPANT_COLORS[name] || "#888",
+      backgroundColor: PARTICIPANT_COLORS[name] || "#888",
+      tension: 0.15,
+      spanGaps: true,
+    };
+  });
+
+  const allValues = datasets.flatMap((d) => d.data);
+  const maxAbs = Math.max(10, ...allValues.map((v) => Math.abs(v)));
+  const bound = Math.ceil((maxAbs * 1.15) / 10) * 10;
+
+  new Chart(canvasEl, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: -bound,
+          max: bound,
+          title: { display: true, text: "ポイント" },
+        },
+        x: {
+          title: { display: true, text: "日付" },
+        },
+      },
+      plugins: {
+        legend: { position: "bottom" },
+      },
+    },
+  });
+}
+
 function renderRankChart(canvasEl, history, key, participants) {
   const labels = history.map((r) => r.date);
   const datasets = participants.map((name) => {
@@ -150,7 +191,7 @@ async function main() {
   );
 
   if (history.length) {
-    renderRankChart(document.getElementById("chart-purpose1"), history, "purpose1", participants);
+    renderPointsChart(document.getElementById("chart-purpose1"), history, "purpose1", participants);
     renderRankChart(document.getElementById("chart-purpose2"), history, "purpose2", participants);
   } else {
     document.querySelectorAll(".chart-section").forEach((el) => (el.hidden = true));
