@@ -136,8 +136,8 @@ td.breakdown {
 }
 
 .player-photo {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--border);
   flex: 0 0 auto;
@@ -146,13 +146,16 @@ td.breakdown {
 }
 
 .player-name {
-  flex: 1;
+  flex: 0 0 auto;
+  min-width: 5.4em;
   white-space: nowrap;
 }
 
 .player-pts {
   font-variant-numeric: tabular-nums;
   flex: 0 0 auto;
+  min-width: 3.6em;
+  text-align: right;
 }
 
 .pts-positive { color: var(--pos); font-weight: 600; }
