@@ -125,11 +125,13 @@ td.breakdown {
 }
 
 .player-photo {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--border);
   flex: 0 0 auto;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .player-name {

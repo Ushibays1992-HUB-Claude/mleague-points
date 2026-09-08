@@ -87,10 +87,11 @@ function renderRankChart(canvasEl, history, key, participants) {
 }
 
 async function main() {
-  const [draftResults, history, latestPlayerPoints] = await Promise.all([
+  const [draftResults, history, latestPlayerPoints, playerPhotos] = await Promise.all([
     fetch("data/draft_results.json").then((r) => r.json()),
     fetch("data/history.json").then((r) => (r.ok ? r.json() : [])),
     fetch("data/latest_player_points.json").then((r) => (r.ok ? r.json() : {})),
+    fetch("data/player_photos.json").then((r) => (r.ok ? r.json() : {})),
   ]);
 
   const participants = draftResults.participants;
@@ -112,8 +113,12 @@ async function main() {
       .map((p) => {
         const pts = latestPlayerPoints[p.name];
         const ptsText = typeof pts === "number" ? formatPoints(pts) : "-";
+        const photoUrl = playerPhotos[p.name];
+        const photo = photoUrl
+          ? `<img class="player-photo" src="${photoUrl}" alt="" loading="lazy">`
+          : `<span class="player-photo" aria-hidden="true"></span>`;
         return `<div class="player-row">
-          <span class="player-photo" aria-hidden="true"></span>
+          ${photo}
           <span class="player-name">${p.name}</span>
           <span class="player-pts">${ptsText}</span>
         </div>`;
