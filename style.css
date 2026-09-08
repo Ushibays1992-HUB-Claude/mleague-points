@@ -84,7 +84,6 @@ main {
 
 table {
   width: 100%;
-  min-width: 640px;
   border-collapse: collapse;
   font-size: 0.92rem;
 }
@@ -124,8 +123,8 @@ td.breakdown {
 
 .player-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, auto));
-  column-gap: 1.25rem;
+  grid-template-columns: repeat(2, max-content);
+  column-gap: 0.9rem;
   row-gap: 0.1rem;
 }
 
@@ -148,14 +147,14 @@ td.breakdown {
 
 .player-name {
   flex: 0 0 auto;
-  min-width: 5.4em;
+  min-width: 4.6em;
   white-space: nowrap;
 }
 
 .player-pts {
   font-variant-numeric: tabular-nums;
   flex: 0 0 auto;
-  min-width: 3.6em;
+  min-width: 3.1em;
   text-align: right;
 }
 
