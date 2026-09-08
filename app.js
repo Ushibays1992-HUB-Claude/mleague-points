@@ -11,6 +11,16 @@ function formatPoints(n) {
   return sign + n.toFixed(1);
 }
 
+function pointsClass(n) {
+  if (n > 0) return "pts-positive";
+  if (n < 0) return "pts-negative";
+  return "pts-zero";
+}
+
+function formatPointsHtml(n) {
+  return `<span class="${pointsClass(n)}">${formatPoints(n)}</span>`;
+}
+
 // 標準的な競技順位（同点は同順位、次の順位は人数分飛ぶ）
 function rankOf(totals) {
   const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
@@ -34,7 +44,7 @@ function renderTable(tableEl, totals, extraColumnHeader, extraColumnFn) {
       return `<tr>
         <td class="rank-cell${rankClass}">${rank}</td>
         <td>${name}</td>
-        <td class="points">${formatPoints(value)}</td>
+        <td class="points">${formatPointsHtml(value)}</td>
         <td class="breakdown">${extraColumnFn(name)}</td>
       </tr>`;
     })
@@ -112,7 +122,7 @@ async function main() {
     draftResults.player_draft.results[name]
       .map((p) => {
         const pts = latestPlayerPoints[p.name];
-        const ptsText = typeof pts === "number" ? formatPoints(pts) : "-";
+        const ptsText = typeof pts === "number" ? formatPointsHtml(pts) : "-";
         const photoUrl = playerPhotos[p.name];
         const photo = photoUrl
           ? `<img class="player-photo" src="${photoUrl}" alt="" loading="lazy">`

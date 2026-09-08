@@ -9,6 +9,8 @@
   --rank1: #d4af37;
   --rank2: #a8a8b3;
   --rank3: #b08d57;
+  --pos: #1a8f3c;
+  --neg: #d1393e;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +20,8 @@
     --text: #ececf4;
     --muted: #9a9aab;
     --border: #33333f;
+    --pos: #4caf50;
+    --neg: #ef5350;
   }
 }
 
@@ -143,6 +147,10 @@ td.breakdown {
   font-variant-numeric: tabular-nums;
   flex: 0 0 auto;
 }
+
+.pts-positive { color: var(--pos); font-weight: 600; }
+.pts-negative { color: var(--neg); font-weight: 600; }
+.pts-zero { color: var(--muted); }
 
 td.points {
   font-variant-numeric: tabular-nums;
