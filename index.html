@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mリーグポイント集計ページ</title>
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <header class="site-header">
@@ -22,7 +22,7 @@
 
   <section class="chart-section">
     <h2>ポイント推移（①選手指名）</h2>
-    <div class="chart-wrap"><div class="chart-inner" id="chart-purpose1-inner"><canvas id="chart-purpose1"></canvas></div></div>
+    <div class="chart-wrap"><canvas id="chart-purpose1"></canvas></div>
   </section>
 
   <section class="board" id="board-purpose2">
@@ -34,7 +34,7 @@
 
   <section class="chart-section">
     <h2>順位変動（②チーム指名）</h2>
-    <div class="chart-wrap"><div class="chart-inner" id="chart-purpose2-inner"><canvas id="chart-purpose2"></canvas></div></div>
+    <div class="chart-wrap"><canvas id="chart-purpose2"></canvas></div>
   </section>
 
   <p class="empty-state" id="empty-state" hidden>
@@ -48,6 +48,6 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.1/chart.umd.min.js"></script>
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

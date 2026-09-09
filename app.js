@@ -58,8 +58,6 @@ function renderTable(tableEl, totals, extraColumnHeader, extraColumnFn) {
 }
 
 const CHART_RIGHT_PADDING = 60;
-const PX_PER_POINT = 42;
-const MIN_CHART_WIDTH = 560;
 
 // 各系列の最終値の位置に参加者名を描画するプラグイン(近い値は少しずらして重なりを回避)
 const endLabelsPlugin = {
@@ -93,19 +91,7 @@ const endLabelsPlugin = {
   },
 };
 
-function setChartWidth(innerEl, pointCount) {
-  const width = Math.max(MIN_CHART_WIDTH, pointCount * PX_PER_POINT);
-  innerEl.style.width = `${width}px`;
-}
-
-// 初期表示を最新日(右端)にスクロールしておく
-function scrollChartToEnd(innerEl) {
-  const wrap = innerEl.closest(".chart-wrap");
-  if (wrap) wrap.scrollLeft = wrap.scrollWidth;
-}
-
-function renderPointsChart(innerEl, canvasEl, history, key, participants) {
-  setChartWidth(innerEl, history.length);
+function renderPointsChart(canvasEl, history, key, participants) {
   const labels = history.map((r) => r.date);
   const datasets = participants.map((name) => {
     const data = history.map((r) => r[key][name]);
@@ -146,11 +132,9 @@ function renderPointsChart(innerEl, canvasEl, history, key, participants) {
       },
     },
   });
-  scrollChartToEnd(innerEl);
 }
 
-function renderRankChart(innerEl, canvasEl, history, key, participants) {
-  setChartWidth(innerEl, history.length);
+function renderRankChart(canvasEl, history, key, participants) {
   const labels = history.map((r) => r.date);
   const datasets = participants.map((name) => {
     const data = history.map((r) => rankOf(r[key]).ranks[name]);
@@ -189,7 +173,6 @@ function renderRankChart(innerEl, canvasEl, history, key, participants) {
       },
     },
   });
-  scrollChartToEnd(innerEl);
 }
 
 async function main() {
@@ -257,14 +240,12 @@ async function main() {
 
   if (history.length) {
     renderPointsChart(
-      document.getElementById("chart-purpose1-inner"),
       document.getElementById("chart-purpose1"),
       history,
       "purpose1",
       participants
     );
     renderRankChart(
-      document.getElementById("chart-purpose2-inner"),
       document.getElementById("chart-purpose2"),
       history,
       "purpose2",
