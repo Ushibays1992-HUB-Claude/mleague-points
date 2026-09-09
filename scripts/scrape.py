@@ -116,7 +116,7 @@ def main() -> int:
     history = load_history()
     if history:
         last = history[-1]
-        if last.get("purpose1") == purpose1 and last.get("purpose2") == purpose2:
+        if last.get("players") == all_player_points:
             print("no change since last recorded entry; skipping")
             return 0
 
@@ -124,6 +124,7 @@ def main() -> int:
         "date": today.isoformat(),
         "purpose1": purpose1,
         "purpose2": purpose2,
+        "players": all_player_points,
     }
     history.append(record)
     HISTORY_PATH.write_text(
