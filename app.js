@@ -145,6 +145,7 @@ function renderRankChart(canvasEl, history, key, participants) {
       backgroundColor: PARTICIPANT_COLORS[name] || "#888",
       tension: 0.15,
       spanGaps: true,
+      clip: { left: 0, right: 0, top: 8, bottom: 8 },
     };
   });
 
