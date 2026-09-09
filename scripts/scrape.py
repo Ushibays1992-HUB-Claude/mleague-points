@@ -95,7 +95,8 @@ def load_history() -> list:
 
 
 def main() -> int:
-    today = datetime.now(JST).date()
+    now = datetime.now(JST)
+    today = now.date()
     if today > SEASON_END_DATE:
         print(f"season already ended (today={today} > {SEASON_END_DATE}); skipping scrape")
         return 0
@@ -122,6 +123,7 @@ def main() -> int:
 
     record = {
         "date": today.isoformat(),
+        "time": now.strftime("%H:%M"),
         "purpose1": purpose1,
         "purpose2": purpose2,
         "players": all_player_points,
@@ -130,7 +132,7 @@ def main() -> int:
     HISTORY_PATH.write_text(
         json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print(f"appended record for {today.isoformat()}")
+    print(f"appended record for {today.isoformat()} {record['time']}")
     return 0
 
 
