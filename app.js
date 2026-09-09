@@ -1,9 +1,9 @@
 const PARTICIPANT_COLORS = {
-  "うし": "#5b4de0",
-  "犬丼": "#e05b7a",
-  "ちんさん": "#2fa88f",
-  "木村": "#e0a02f",
-  "ヤンマ": "#3f7fd9",
+  "うし": "#3f7fd9",
+  "犬丼": "#e0a02f",
+  "ちんさん": "#e05b7a",
+  "木村": "#d1393e",
+  "ヤンマ": "#2fa88f",
 };
 
 function formatPoints(n) {
