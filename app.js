@@ -186,7 +186,7 @@ async function main() {
   };
 
   document.getElementById("updated-at").textContent = history.length
-    ? `最終更新: ${latest.date}`
+    ? `最終更新: ${latest.date} 13:17`
     : "まだデータがありません（シーズン開幕待ち）";
 
   if (!history.length) {
