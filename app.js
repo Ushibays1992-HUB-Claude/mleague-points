@@ -57,7 +57,55 @@ function renderTable(tableEl, totals, extraColumnHeader, extraColumnFn) {
   `;
 }
 
-function renderPointsChart(canvasEl, history, key, participants) {
+const CHART_RIGHT_PADDING = 60;
+const PX_PER_POINT = 42;
+const MIN_CHART_WIDTH = 560;
+
+// 各系列の最終値の位置に参加者名を描画するプラグイン(近い値は少しずらして重なりを回避)
+const endLabelsPlugin = {
+  id: "endLabels",
+  afterDatasetsDraw(chart) {
+    const { ctx, chartArea } = chart;
+    const items = [];
+    chart.data.datasets.forEach((ds, i) => {
+      const meta = chart.getDatasetMeta(i);
+      if (meta.hidden || !meta.data.length) return;
+      const last = meta.data[meta.data.length - 1];
+      items.push({ label: ds.label, color: ds.borderColor, y: last.y });
+    });
+    items.sort((a, b) => a.y - b.y);
+    const minGap = 14;
+    for (let i = 1; i < items.length; i++) {
+      if (items[i].y - items[i - 1].y < minGap) {
+        items[i].y = items[i - 1].y + minGap;
+      }
+    }
+
+    ctx.save();
+    ctx.font = "11px sans-serif";
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "left";
+    items.forEach((it) => {
+      ctx.fillStyle = it.color;
+      ctx.fillText(it.label, chartArea.right + 6, it.y);
+    });
+    ctx.restore();
+  },
+};
+
+function setChartWidth(innerEl, pointCount) {
+  const width = Math.max(MIN_CHART_WIDTH, pointCount * PX_PER_POINT);
+  innerEl.style.width = `${width}px`;
+}
+
+// 初期表示を最新日(右端)にスクロールしておく
+function scrollChartToEnd(innerEl) {
+  const wrap = innerEl.closest(".chart-wrap");
+  if (wrap) wrap.scrollLeft = wrap.scrollWidth;
+}
+
+function renderPointsChart(innerEl, canvasEl, history, key, participants) {
+  setChartWidth(innerEl, history.length);
   const labels = history.map((r) => r.date);
   const datasets = participants.map((name) => {
     const data = history.map((r) => r[key][name]);
@@ -78,9 +126,11 @@ function renderPointsChart(canvasEl, history, key, participants) {
   new Chart(canvasEl, {
     type: "line",
     data: { labels, datasets },
+    plugins: [endLabelsPlugin],
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: { padding: { right: CHART_RIGHT_PADDING } },
       scales: {
         y: {
           min: -bound,
@@ -96,9 +146,11 @@ function renderPointsChart(canvasEl, history, key, participants) {
       },
     },
   });
+  scrollChartToEnd(innerEl);
 }
 
-function renderRankChart(canvasEl, history, key, participants) {
+function renderRankChart(innerEl, canvasEl, history, key, participants) {
+  setChartWidth(innerEl, history.length);
   const labels = history.map((r) => r.date);
   const datasets = participants.map((name) => {
     const data = history.map((r) => rankOf(r[key]).ranks[name]);
@@ -115,9 +167,11 @@ function renderRankChart(canvasEl, history, key, participants) {
   new Chart(canvasEl, {
     type: "line",
     data: { labels, datasets },
+    plugins: [endLabelsPlugin],
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      layout: { padding: { right: CHART_RIGHT_PADDING } },
       scales: {
         y: {
           reverse: true,
@@ -135,6 +189,7 @@ function renderRankChart(canvasEl, history, key, participants) {
       },
     },
   });
+  scrollChartToEnd(innerEl);
 }
 
 async function main() {
@@ -201,8 +256,20 @@ async function main() {
   );
 
   if (history.length) {
-    renderPointsChart(document.getElementById("chart-purpose1"), history, "purpose1", participants);
-    renderRankChart(document.getElementById("chart-purpose2"), history, "purpose2", participants);
+    renderPointsChart(
+      document.getElementById("chart-purpose1-inner"),
+      document.getElementById("chart-purpose1"),
+      history,
+      "purpose1",
+      participants
+    );
+    renderRankChart(
+      document.getElementById("chart-purpose2-inner"),
+      document.getElementById("chart-purpose2"),
+      history,
+      "purpose2",
+      participants
+    );
   } else {
     document.querySelectorAll(".chart-section").forEach((el) => (el.hidden = true));
   }

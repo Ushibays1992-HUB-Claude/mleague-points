@@ -182,8 +182,14 @@ td.points {
 }
 
 .chart-wrap {
-  position: relative;
   height: 320px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.chart-inner {
+  position: relative;
+  height: 100%;
 }
 
 .empty-state {
