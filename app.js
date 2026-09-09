@@ -121,11 +121,8 @@ function renderPointsChart(canvasEl, history, key, participants) {
         y: {
           min: -bound,
           max: bound,
-          title: { display: true, text: "ポイント" },
         },
-        x: {
-          title: { display: true, text: "日付" },
-        },
+        x: {},
       },
       plugins: {
         legend: { position: "bottom" },
@@ -163,11 +160,8 @@ function renderRankChart(canvasEl, history, key, participants) {
           min: 1,
           max: participants.length,
           ticks: { stepSize: 1 },
-          title: { display: true, text: "順位" },
         },
-        x: {
-          title: { display: true, text: "日付" },
-        },
+        x: {},
       },
       plugins: {
         legend: { position: "bottom" },
