@@ -42,11 +42,13 @@
     "description": "各参加者がMリーグ10チームのうち1チームを指名した結果（5チームは未使用のまま残存）",
     "results": {
       "うし": "U-NEXT Pirates",
-      "犬丼": "TEAM RAIDEN",
+      "犬丼(雷電)": "TEAM RAIDEN",
+      "犬丼(BEAST)": "BEAST X",
       "ちんさん": "KADOKAWAサクラナイツ",
       "木村": "KONAMI麻雀格闘倶楽部",
       "ヤンマ": "赤坂ドリブンズ"
     },
-    "undrafted_teams": ["EARTH JETS", "EX風林火山", "渋谷ABEMAS", "セガサミーフェニックス", "BEAST X"]
+    "notes": "犬丼のみ特別ルールでTEAM RAIDENとBEAST Xの両方にベット可能（他の参加者は1チームのみ）",
+    "undrafted_teams": ["EARTH JETS", "EX風林火山", "渋谷ABEMAS", "セガサミーフェニックス"]
   }
 }

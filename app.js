@@ -1,6 +1,8 @@
 const PARTICIPANT_COLORS = {
   "うし": "#3f7fd9",
   "犬丼": "#e0a02f",
+  "犬丼(雷電)": "#e0a02f",
+  "犬丼(BEAST)": "#8a63d2",
   "ちんさん": "#f4a8ba",
   "木村": "#d1393e",
   "ヤンマ": "#2fa88f",
@@ -179,10 +181,11 @@ async function main() {
     fetch("data/team_logos.json").then((r) => (r.ok ? r.json() : {})),
   ]);
 
-  const participants = draftResults.participants;
+  const participants1 = draftResults.participants;
+  const participants2 = Object.keys(draftResults.team_draft.results);
   const latest = history.length ? history[history.length - 1] : {
-    purpose1: Object.fromEntries(participants.map((p) => [p, 0])),
-    purpose2: Object.fromEntries(participants.map((p) => [p, 0])),
+    purpose1: Object.fromEntries(participants1.map((p) => [p, 0])),
+    purpose2: Object.fromEntries(participants2.map((p) => [p, 0])),
   };
 
   document.getElementById("updated-at").textContent = history.length
@@ -238,13 +241,13 @@ async function main() {
       document.getElementById("chart-purpose1"),
       history,
       "purpose1",
-      participants
+      participants1
     );
     renderRankChart(
       document.getElementById("chart-purpose2"),
       history,
       "purpose2",
-      participants
+      participants2
     );
   } else {
     document.querySelectorAll(".chart-section").forEach((el) => (el.hidden = true));

@@ -76,13 +76,14 @@ def compute_totals(player_points_by_team: dict, draft_results: dict) -> tuple[di
         team_points[team] = sum(players.values())
 
     purpose1 = {}
-    purpose2 = {}
     for participant in draft_results["participants"]:
         drafted_players = draft_results["player_draft"]["results"][participant]
         purpose1[participant] = sum(
             all_player_points.get(p["name"], 0.0) for p in drafted_players
         )
-        drafted_team = draft_results["team_draft"]["results"][participant]
+
+    purpose2 = {}
+    for participant, drafted_team in draft_results["team_draft"]["results"].items():
         purpose2[participant] = team_points.get(drafted_team, 0.0)
 
     return purpose1, purpose2, all_player_points
