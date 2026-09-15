@@ -206,6 +206,14 @@ td.diff {
   display: inline-table;
 }
 
+/* この表は内容に合わせて丸ごと縮む(inline-table)ので、他の表向けの
+   width:1%(はみ出しを最後の列に集中させる)トリックは不要かつ逆効果
+   になるため無効化する */
+#table-allteams th,
+#table-allteams td {
+  width: auto;
+}
+
 #table-allteams th:nth-child(3),
 #table-allteams th:nth-child(4),
 #table-allteams td.points,
