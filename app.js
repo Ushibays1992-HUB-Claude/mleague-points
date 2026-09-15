@@ -8,6 +8,19 @@ const PARTICIPANT_COLORS = {
   "ヤンマ": "#2fa88f",
 };
 
+const TEAM_COLORS = {
+  "U-NEXT Pirates": "#1f6fb2",
+  "赤坂ドリブンズ": "#c0392b",
+  "EX風林火山": "#6b4226",
+  "KADOKAWAサクラナイツ": "#e05a9c",
+  "KONAMI麻雀格闘倶楽部": "#2e8b57",
+  "渋谷ABEMAS": "#8e44ad",
+  "セガサミーフェニックス": "#f39c12",
+  "TEAM RAIDEN": "#3454a5",
+  "BEAST X": "#16a085",
+  "EARTH JETS": "#7f8c8d",
+};
+
 function formatPoints(n) {
   const sign = n > 0 ? "+" : "";
   return sign + n.toFixed(1);
@@ -59,6 +72,39 @@ function renderTable(tableEl, totals, extraColumnHeader, extraColumnFn) {
   `;
 }
 
+function renderTeamTable(tableEl, totals, teamLogos) {
+  const { entries, ranks } = rankOf(totals);
+  const rows = entries
+    .map(([name, value]) => {
+      const rank = ranks[name];
+      const rankClass = rank <= 3 ? ` rank-${rank}` : "";
+      const logoUrl = teamLogos[name];
+      const logo = logoUrl
+        ? `<img class="team-logo" src="${logoUrl}" alt="" loading="lazy">`
+        : "";
+      return `<tr>
+        <td class="rank-cell${rankClass}">${rank}</td>
+        <td><span class="team-row">${logo}<span>${name}</span></span></td>
+        <td class="points">${formatPointsHtml(value)}</td>
+      </tr>`;
+    })
+    .join("");
+  tableEl.innerHTML = `
+    <thead>
+      <tr><th>順位</th><th>チーム</th><th>ポイント</th></tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  `;
+}
+
+function computeTeamTotals(playerPoints, nameToTeam) {
+  const totals = {};
+  for (const [name, team] of Object.entries(nameToTeam)) {
+    totals[team] = (totals[team] || 0) + (playerPoints[name] || 0);
+  }
+  return totals;
+}
+
 const CHART_RIGHT_PADDING = 60;
 
 // 各系列の最終値の位置に参加者名を描画するプラグイン(近い値は少しずらして重なりを回避)
@@ -93,15 +139,15 @@ const endLabelsPlugin = {
   },
 };
 
-function renderPointsChart(canvasEl, history, key, participants) {
+function renderPointsChart(canvasEl, history, key, participants, colors = PARTICIPANT_COLORS) {
   const labels = history.map((r) => r.date);
   const datasets = participants.map((name) => {
     const data = history.map((r) => r[key][name]);
     return {
       label: name,
       data,
-      borderColor: PARTICIPANT_COLORS[name] || "#888",
-      backgroundColor: PARTICIPANT_COLORS[name] || "#888",
+      borderColor: colors[name] || "#888",
+      backgroundColor: colors[name] || "#888",
       tension: 0.15,
       spanGaps: true,
     };
@@ -133,15 +179,15 @@ function renderPointsChart(canvasEl, history, key, participants) {
   });
 }
 
-function renderRankChart(canvasEl, history, key, participants) {
+function renderRankChart(canvasEl, history, key, participants, colors = PARTICIPANT_COLORS) {
   const labels = history.map((r) => r.date);
   const datasets = participants.map((name) => {
     const data = history.map((r) => rankOf(r[key]).ranks[name]);
     return {
       label: name,
       data,
-      borderColor: PARTICIPANT_COLORS[name] || "#888",
-      backgroundColor: PARTICIPANT_COLORS[name] || "#888",
+      borderColor: colors[name] || "#888",
+      backgroundColor: colors[name] || "#888",
       tension: 0.15,
       spanGaps: true,
       clip: { left: 0, right: 0, top: 8, bottom: 8 },
@@ -173,13 +219,17 @@ function renderRankChart(canvasEl, history, key, participants) {
 }
 
 async function main() {
-  const [draftResults, history, latestPlayerPoints, playerPhotos, teamLogos] = await Promise.all([
+  const [draftResults, history, latestPlayerPoints, playerPhotos, teamLogos, playersRoster] = await Promise.all([
     fetch("data/draft_results.json").then((r) => r.json()),
     fetch("data/history.json").then((r) => (r.ok ? r.json() : [])),
     fetch("data/latest_player_points.json").then((r) => (r.ok ? r.json() : {})),
     fetch("data/player_photos.json").then((r) => (r.ok ? r.json() : {})),
     fetch("data/team_logos.json").then((r) => (r.ok ? r.json() : {})),
+    fetch("data/players.json").then((r) => (r.ok ? r.json() : { players: [] })),
   ]);
+
+  const nameToTeam = Object.fromEntries(playersRoster.players.map((p) => [p.name, p.team]));
+  const allTeams = [...new Set(playersRoster.players.map((p) => p.team))];
 
   const participants1 = draftResults.participants;
   const participants2 = Object.keys(draftResults.team_draft.results);
@@ -236,6 +286,9 @@ async function main() {
     teamOf
   );
 
+  const latestTeamTotals = computeTeamTotals(latestPlayerPoints, nameToTeam);
+  renderTeamTable(document.getElementById("table-allteams"), latestTeamTotals, teamLogos);
+
   if (history.length) {
     renderPointsChart(
       document.getElementById("chart-purpose1"),
@@ -248,6 +301,18 @@ async function main() {
       history,
       "purpose2",
       participants2
+    );
+
+    const teamHistory = history.map((r) => ({
+      date: r.date,
+      teams: computeTeamTotals(r.players || {}, nameToTeam),
+    }));
+    renderRankChart(
+      document.getElementById("chart-allteams"),
+      teamHistory,
+      "teams",
+      allTeams,
+      TEAM_COLORS
     );
   } else {
     document.querySelectorAll(".chart-section").forEach((el) => (el.hidden = true));
