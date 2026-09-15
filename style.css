@@ -96,6 +96,14 @@ th, td {
   white-space: nowrap;
 }
 
+/* 順位・参加者(チーム)・ポイント列は内容に合わせて詰め、
+   はみ出す分は最後の内訳列だけに集中させる(スマホでポイントまでが
+   スクロールなしで見えるように) */
+th:nth-child(-n + 3),
+td:nth-child(-n + 3) {
+  width: 1%;
+}
+
 th {
   color: var(--muted);
   font-weight: 600;
@@ -218,6 +226,19 @@ td.diff {
 .chart-wrap {
   position: relative;
   height: 320px;
+}
+
+/* 全10チーム分の凡例は折り返し行数が多く、通常の高さだと下の方が
+   見切れるため広めに確保する（スマホの狭い幅ではさらに折り返しが
+   増えるため、より高くする） */
+.chart-wrap-allteams {
+  height: 420px;
+}
+
+@media (max-width: 600px) {
+  .chart-wrap-allteams {
+    height: 520px;
+  }
 }
 
 .empty-state {
