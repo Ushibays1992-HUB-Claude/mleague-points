@@ -88,6 +88,14 @@ function diffFromAbove(entries) {
   return diffs;
 }
 
+// 全チーム順位表はスマホでもポイントまで一目で見えるよう、
+// 長いチーム名だけこの表限定で略称にする(データのキーやロゴ紐付けは正式名称のまま)
+const TEAM_ABBREV = {
+  "KADOKAWAサクラナイツ": "サクラナイツ",
+  "セガサミーフェニックス": "フェニックス",
+  "KONAMI麻雀格闘倶楽部": "KONAMI",
+};
+
 function renderTeamTable(tableEl, totals, teamLogos) {
   const { entries, ranks } = rankOf(totals);
   const diffs = diffFromAbove(entries);
@@ -99,11 +107,12 @@ function renderTeamTable(tableEl, totals, teamLogos) {
       const logo = logoUrl
         ? `<img class="team-logo" src="${logoUrl}" alt="" loading="lazy">`
         : "";
+      const displayName = TEAM_ABBREV[name] || name;
       const diff = diffs[name];
       const diffText = diff === null ? "―" : diff.toFixed(1);
       return `<tr>
         <td class="rank-cell${rankClass}">${rank}</td>
-        <td><span class="team-row">${logo}<span>${name}</span></span></td>
+        <td><span class="team-row">${logo}<span>${displayName}</span></span></td>
         <td class="points">${formatPointsHtml(value)}</td>
         <td class="diff">${diffText}</td>
       </tr>`;
