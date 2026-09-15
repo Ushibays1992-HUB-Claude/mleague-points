@@ -179,6 +179,12 @@ td.breakdown {
 td.points {
   font-variant-numeric: tabular-nums;
   font-weight: 600;
+  text-align: right;
+}
+
+#table-purpose1 th:nth-child(3),
+#table-purpose2 th:nth-child(3) {
+  text-align: right;
 }
 
 td.diff {
