@@ -186,9 +186,27 @@ td.diff {
   color: var(--muted);
 }
 
+#table-allteams {
+  width: auto;
+  min-width: 0;
+  display: inline-table;
+}
+
+#table-allteams th:nth-child(3),
+#table-allteams th:nth-child(4),
 #table-allteams td.points,
 #table-allteams td.diff {
   text-align: right;
+}
+
+#table-allteams td.points,
+#table-allteams th:nth-child(3) {
+  padding-left: 1.5rem;
+}
+
+#table-allteams td.diff,
+#table-allteams th:nth-child(4) {
+  padding-left: 1.5rem;
 }
 
 .chart-wrap {
