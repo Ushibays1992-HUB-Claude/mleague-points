@@ -68,6 +68,22 @@ def fetch_player_points() -> dict:
     return result
 
 
+def normalize_team_name(name: str) -> str:
+    return name.replace(" ", "").replace("　", "").replace("/", "")
+
+
+def find_team_total(team_points: dict, target_name: str) -> float:
+    """公式サイト側のチーム名表記揺れ（スペース追加・「/ 雷電」等の別名併記）を吸収して合計を探す"""
+    if target_name in team_points:
+        return team_points[target_name]
+    norm_target = normalize_team_name(target_name)
+    for team, total in team_points.items():
+        norm_team = normalize_team_name(team)
+        if norm_team == norm_target or norm_target in norm_team or norm_team in norm_target:
+            return total
+    return 0.0
+
+
 def compute_totals(player_points_by_team: dict, draft_results: dict) -> tuple[dict, dict, dict]:
     all_player_points = {}
     team_points = {}
@@ -84,7 +100,7 @@ def compute_totals(player_points_by_team: dict, draft_results: dict) -> tuple[di
 
     purpose2 = {}
     for participant, drafted_team in draft_results["team_draft"]["results"].items():
-        purpose2[participant] = team_points.get(drafted_team, 0.0)
+        purpose2[participant] = find_team_total(team_points, drafted_team)
 
     return purpose1, purpose2, all_player_points
 
