@@ -186,6 +186,11 @@ td.diff {
   color: var(--muted);
 }
 
+#table-allteams td.points,
+#table-allteams td.diff {
+  text-align: right;
+}
+
 .chart-wrap {
   position: relative;
   height: 320px;

@@ -100,7 +100,7 @@ function renderTeamTable(tableEl, totals, teamLogos) {
         ? `<img class="team-logo" src="${logoUrl}" alt="" loading="lazy">`
         : "";
       const diff = diffs[name];
-      const diffText = diff === null ? "―" : `${diff.toFixed(1)}pt`;
+      const diffText = diff === null ? "―" : diff.toFixed(1);
       return `<tr>
         <td class="rank-cell${rankClass}">${rank}</td>
         <td><span class="team-row">${logo}<span>${name}</span></span></td>
