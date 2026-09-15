@@ -181,6 +181,11 @@ td.points {
   font-weight: 600;
 }
 
+td.diff {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
 .chart-wrap {
   position: relative;
   height: 320px;

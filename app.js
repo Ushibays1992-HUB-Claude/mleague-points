@@ -73,8 +73,24 @@ function renderTable(tableEl, totals, extraColumnHeader, extraColumnFn) {
   `;
 }
 
+// 1つ上の順位（直前の異なる値）との差を各エントリに割り当てる（同順位は同じ差になる）
+function diffFromAbove(entries) {
+  const diffs = {};
+  let aboveValue = null;
+  let currentGroupValue = null;
+  entries.forEach(([name, value]) => {
+    if (value !== currentGroupValue) {
+      aboveValue = currentGroupValue;
+      currentGroupValue = value;
+    }
+    diffs[name] = aboveValue === null ? null : aboveValue - value;
+  });
+  return diffs;
+}
+
 function renderTeamTable(tableEl, totals, teamLogos) {
   const { entries, ranks } = rankOf(totals);
+  const diffs = diffFromAbove(entries);
   const rows = entries
     .map(([name, value]) => {
       const rank = ranks[name];
@@ -83,16 +99,19 @@ function renderTeamTable(tableEl, totals, teamLogos) {
       const logo = logoUrl
         ? `<img class="team-logo" src="${logoUrl}" alt="" loading="lazy">`
         : "";
+      const diff = diffs[name];
+      const diffText = diff === null ? "―" : `${diff.toFixed(1)}pt`;
       return `<tr>
         <td class="rank-cell${rankClass}">${rank}</td>
         <td><span class="team-row">${logo}<span>${name}</span></span></td>
         <td class="points">${formatPointsHtml(value)}</td>
+        <td class="diff">${diffText}</td>
       </tr>`;
     })
     .join("");
   tableEl.innerHTML = `
     <thead>
-      <tr><th>順位</th><th>チーム</th><th>ポイント</th></tr>
+      <tr><th>順位</th><th>チーム</th><th>ポイント</th><th>差</th></tr>
     </thead>
     <tbody>${rows}</tbody>
   `;
