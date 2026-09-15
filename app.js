@@ -2,23 +2,24 @@ const PARTICIPANT_COLORS = {
   "うし": "#3f7fd9",
   "犬丼": "#e0a02f",
   "犬丼(雷電)": "#e0a02f",
-  "犬丼(BEAST)": "#8a63d2",
+  "犬丼(BEAST)": "#1b5e20",
   "ちんさん": "#f4a8ba",
   "木村": "#d1393e",
   "ヤンマ": "#2fa88f",
 };
 
+// ドラフトされた5チームは①選手指名と同じ参加者色に合わせる
 const TEAM_COLORS = {
-  "U-NEXT Pirates": "#1f6fb2",
-  "赤坂ドリブンズ": "#c0392b",
-  "EX風林火山": "#6b4226",
-  "KADOKAWAサクラナイツ": "#e05a9c",
-  "KONAMI麻雀格闘倶楽部": "#2e8b57",
-  "渋谷ABEMAS": "#8e44ad",
-  "セガサミーフェニックス": "#f39c12",
-  "TEAM RAIDEN": "#3454a5",
-  "BEAST X": "#16a085",
-  "EARTH JETS": "#7f8c8d",
+  "U-NEXT Pirates": "#3f7fd9",
+  "TEAM RAIDEN": "#e0a02f",
+  "KADOKAWAサクラナイツ": "#f4a8ba",
+  "赤坂ドリブンズ": "#2fa88f",
+  "KONAMI麻雀格闘倶楽部": "#d1393e",
+  "BEAST X": "#1b5e20",
+  "EARTH JETS": "#808000",
+  "EX風林火山": "#5c1010",
+  "セガサミーフェニックス": "#e67e22",
+  "渋谷ABEMAS": "#1a1a1a",
 };
 
 function formatPoints(n) {
