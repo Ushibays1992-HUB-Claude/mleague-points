@@ -2,7 +2,7 @@ name: Scrape M.League points
 
 on:
   schedule:
-    - cron: "57 23 * * *" # 8:57 JST
+    - cron: "17 19 * * *" # 4:17 JST
   workflow_dispatch: {}
 
 permissions:
