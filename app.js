@@ -208,45 +208,6 @@ function renderPointsChart(canvasEl, history, key, participants, colors = PARTIC
   });
 }
 
-function renderRankChart(canvasEl, history, key, participants, colors = PARTICIPANT_COLORS) {
-  const labels = history.map((r) => r.date);
-  const datasets = participants.map((name) => {
-    const data = history.map((r) => rankOf(r[key]).ranks[name]);
-    return {
-      label: name,
-      data,
-      borderColor: colors[name] || "#888",
-      backgroundColor: colors[name] || "#888",
-      tension: 0.15,
-      spanGaps: true,
-      clip: { left: 0, right: 0, top: 8, bottom: 8 },
-    };
-  });
-
-  new Chart(canvasEl, {
-    type: "line",
-    data: { labels, datasets },
-    plugins: [endLabelsPlugin],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      layout: { padding: { right: CHART_RIGHT_PADDING } },
-      scales: {
-        y: {
-          reverse: true,
-          min: 1,
-          max: participants.length,
-          ticks: { stepSize: 1 },
-        },
-        x: {},
-      },
-      plugins: {
-        legend: { position: "bottom" },
-      },
-    },
-  });
-}
-
 async function main() {
   const [draftResults, history, latestPlayerPoints, playerPhotos, teamLogos, playersRoster] = await Promise.all([
     fetch("data/draft_results.json").then((r) => r.json()),
@@ -325,7 +286,7 @@ async function main() {
       "purpose1",
       participants1
     );
-    renderRankChart(
+    renderPointsChart(
       document.getElementById("chart-purpose2"),
       history,
       "purpose2",
@@ -336,7 +297,7 @@ async function main() {
       date: r.date,
       teams: computeTeamTotals(r.players || {}, nameToTeam),
     }));
-    renderRankChart(
+    renderPointsChart(
       document.getElementById("chart-allteams"),
       teamHistory,
       "teams",
