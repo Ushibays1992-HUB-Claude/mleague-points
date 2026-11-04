@@ -1,14 +1,15 @@
-"""Mリーグ公式サイト(/stats)から選手ポイントを取得し、参加者ごとの集計をhistory.jsonに追記する。"""
+"""Mリーグ公式サイトの統計APIから選手ポイントを取得し、参加者ごとの集計をhistory.jsonに追記する。"""
 import json
-import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
-from bs4 import BeautifulSoup
 
-STATS_URL = "https://m-league.jp/stats/?season=L001_S025"
+# 2026-11の不正アクセス事故に伴うサイト再構築後、/statsページはJSで後から
+# 書き換えられる仕組みに変わり、静的HTMLには0しか入らなくなった。
+# 実データはこのJSON APIから取得する(ブラウザのネットワークログから特定)。
+STATS_API_URL = "https://m-league.jp/api/mleague/data?kind=stats"
 JST = timezone(timedelta(hours=9))
 SEASON_END_DATE = datetime(2027, 3, 3, tzinfo=JST).date()
 
@@ -19,51 +20,28 @@ HISTORY_PATH = DATA_DIR / "history.json"
 LATEST_PLAYER_POINTS_PATH = DATA_DIR / "latest_player_points.json"
 
 
-def parse_point(text: str) -> float:
-    text = text.strip().replace(",", "")
-    if text in ("", "-", "―", "―pt"):
-        return 0.0
-    negative = text.startswith("▲") or text.startswith("△")
-    text = text.lstrip("▲△")
-    try:
-        value = float(text)
-    except ValueError:
-        return 0.0
-    return -value if negative else value
-
-
 def fetch_player_points() -> dict:
     """team_name -> {player_name: points} を返す"""
-    resp = requests.get(STATS_URL, headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
+    resp = requests.get(
+        STATS_API_URL,
+        headers={"User-Agent": "Mozilla/5.0", "Referer": "https://m-league.jp/stats/"},
+        timeout=30,
+    )
     resp.raise_for_status()
-    soup = BeautifulSoup(resp.text, "html.parser")
+    data = resp.json()
 
     result = {}
-    for section in soup.select("section.p-stats__team"):
-        team_name_tag = section.select_one("h2.p-stats__teamName")
-        if not team_name_tag:
+    for team in data["stats"]["teams"]:
+        team_name = team["team"]
+        players = team["players"]
+        points_metric = next(
+            (m for m in team["metrics"] if m["name"] == "ポイント"), None
+        )
+        if points_metric is None:
             continue
-        team_name = team_name_tag.get_text(strip=True)
-
-        table = section.select_one("table.p-stats__table")
-        if not table:
-            continue
-        rows = table.find_all("tr")
-
-        player_names = []
-        points = []
-        for row in rows:
-            header = row.find("th", attrs={"scope": "row"})
-            if header is None:
-                continue
-            label = header.get_text(strip=True)
-            if label == "選手名":
-                player_names = [th.get_text(strip=True) for th in row.find_all("th", attrs={"scope": "col"})]
-            elif label == "ポイント":
-                points = [parse_point(td.get_text()) for td in row.find_all("td")]
-
-        if player_names and points and len(player_names) == len(points):
-            result[team_name] = dict(zip(player_names, points))
+        points = points_metric["values"]
+        if players and points and len(players) == len(points):
+            result[team_name] = dict(zip(players, points))
 
     return result
 

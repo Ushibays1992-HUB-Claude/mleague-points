@@ -1,12 +1,8 @@
 name: Scrape M.League points
 
 on:
-  # 2026-11: 公式サイトの不正アクセス事故に伴うシステム再構築で、
-  # /statsの集計が旧システムの累積と繋がらない状態になっているため、
-  # 自動実行を一時停止中(手動実行のみ可)。公式側が追いつき次第、
-  # schedule を復活させること。
-  # schedule:
-  #   - cron: "17 19 * * *" # 4:17 JST
+  schedule:
+    - cron: "17 19 * * *" # 4:17 JST
   workflow_dispatch: {}
 
 permissions:
